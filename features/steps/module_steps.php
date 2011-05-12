@@ -1,4 +1,5 @@
 <?php
+require_once '../test_module_controller.php';
 $steps->Given('/^a module "([^"]*)"$/', function($world, $class) {
     $world->sut = Module::load($class);
 });
