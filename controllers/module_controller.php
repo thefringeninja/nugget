@@ -3,6 +3,7 @@ App::import('Lib', 'Inflector');
 class ModuleController extends Controller {
     var $module_path;
     var $uses = null;
+    var $pre_request = array();
     var $verbs = array('get', 'post', 'put', 'delete');
     function  __construct() {
         parent::__construct();
