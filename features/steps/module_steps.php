@@ -1,7 +1,7 @@
 <?php
-require_once '../test_module_controller.php';
 $steps->Given('/^a module "([^"]*)"$/', function($world, $class) {
-    $world->sut = Module::load($class);
+            require_once dirname(dirname(__FILE__)) . '/support/test_module_controller.php';
+    $world->sut = new TestModuleController();
 });
 $steps->Then('/^the module path should equal "([^"]*)"$/', function($world, $module_path) {
     Assert::Equals($module_path, $world->sut->module_path);

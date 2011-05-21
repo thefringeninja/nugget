@@ -1,9 +1,24 @@
 <?php
-require_once 'assert.php';
-date_default_timezone_set('UTC');
-
-set_time_limit(0);
-ini_set('display_errors', 1);
+/**
+ * Index
+ *
+ * The Front Controller for handling every request
+ *
+ * PHP versions 4 and 5
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
+ * @package       cake
+ * @subpackage    cake.app.webroot
+ * @since         CakePHP(tm) v 0.2.9
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
 /**
  * Use the DS to separate the directories in other defines
  */
@@ -21,16 +36,15 @@ ini_set('display_errors', 1);
  *
  */
 	if (!defined('ROOT')) {
-		define('ROOT', dirname(__FILE__));
+		define('ROOT', dirname(dirname(dirname(__FILE__))));
 	}
 /**
  * The actual directory name for the "app".
  *
  */
 	if (!defined('APP_DIR')) {
-		define('APP_DIR', 'app');
+		define('APP_DIR', basename(dirname(dirname(__FILE__))));
 	}
-
 /**
  * The absolute path to the "cake" directory, WITHOUT a trailing DS.
  *
@@ -62,14 +76,3 @@ ini_set('display_errors', 1);
 	if (!include(CORE_PATH . 'cake' . DS . 'bootstrap.php')) {
 		trigger_error("CakePHP core could not be found.  Check the value of CAKE_CORE_INCLUDE_PATH in APP/webroot/index.php.  It should point to the directory containing your " . DS . "cake core directory and your " . DS . "vendors root directory.", E_USER_ERROR);
 	}
-
-$corePath = App::core('cake');
-if (isset($corePath[0])) {
-	define('TEST_CAKE_CORE_INCLUDE_PATH', rtrim($corePath[0], DS) . DS);
-} else {
-	define('TEST_CAKE_CORE_INCLUDE_PATH', CAKE_CORE_INCLUDE_PATH);
-}
-
-require_once dirname(dirname(ROOT)) . '/libs/module.php';
-require_once dirname(dirname(ROOT)) . '/controllers/module_controller.php';
-?>
