@@ -44,18 +44,34 @@ class ModuleController extends Controller {
         }
 
         $callback = $verb[$this->params['route']];
-        foreach ($this->pre_request as $hook) {
-            if (false === $hook($request, $response)) {
-                return $response;
-            }
+        return $this->execute_pipeline(null, $callback);
+    }
+
+    private function execute_pipeline($request, $callback) {
+        if (false == $this->execute_pre_request_hooks($request, $response)) {
+            return $response;
         }
+
         $response = $callback($this->params);
 
+        $this->execute_post_request_hooks($request, $response);
+
+        return $response;
+    }
+
+    private function execute_pre_request_hooks(&$request, &$response) {
+        foreach ($this->pre_request as $hook) {
+            if (false === $hook($request, $response)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function execute_post_request_hooks(&$request, &$response) {
         foreach ($this->post_request as $hook) {
             $hook($request, $response);
         }
-
-        return $response;
     }
 }
 class ModuleRoute extends CakeRoute {
