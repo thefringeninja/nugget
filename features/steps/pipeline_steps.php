@@ -23,13 +23,13 @@ $steps->When('/^I request a resource$/', function($world) {
 });
 
 $steps->Then('/^it should cancel execution of the route$/', function($world) {
-    Assert::equals('intercepted', $world->result);
+    Assert::equals('intercepted', $world->result->model);
 });
 $steps->Then('/^it should not cancel execution of the route$/', function($world) {
-    Assert::equals('what', $world->result);
+    Assert::equals('what', $world->result->model);
 });
 $steps->Then('/^it can modify the response$/', function($world) {
-    Assert::equals('what after', $world->result);
+    Assert::equals('what after', $world->result->model);
 });
 
 ?>

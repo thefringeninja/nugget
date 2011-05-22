@@ -25,7 +25,7 @@ $steps->And('/^it should route the action$/', function($world) {
 
     $dispatcher = new Dispatcher();
     $result = $dispatcher->dispatch();
-    Assert::Equals('what', $result);
+    Assert::Equals('what', $result->model);
 });
 $steps->And('/^it should route the action based on the verb$/', function($world) {
     $_SERVER['REQUEST_URI'] = $world->sut->module_path . '/what/some-resource';
@@ -33,6 +33,6 @@ $steps->And('/^it should route the action based on the verb$/', function($world)
 
     $dispatcher = new Dispatcher();
     $result = $dispatcher->dispatch();
-    Assert::Equals('what was posted', $result);
+    Assert::Equals('what was posted', $result->model);
 });
 ?>

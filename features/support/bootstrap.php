@@ -71,5 +71,6 @@ if (isset($corePath[0])) {
 }
 
 require_once dirname(dirname(ROOT)) . '/libs/module.php';
+require_once dirname(dirname(ROOT)) . '/libs/nugget_response.php';
 require_once dirname(dirname(ROOT)) . '/controllers/module_controller.php';
 ?>

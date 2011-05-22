@@ -1,5 +1,6 @@
 <?php
 App::import('Lib', 'Inflector');
+App::import('Lib', 'NuggetResponse');
 class ModuleController extends Controller {
     var $module_path;
     var $uses = null;
@@ -43,16 +44,31 @@ class ModuleController extends Controller {
             return 404;
         }
 
+        // the last item in the pipeline should be the rendering step
+        $controller = &$this;
+        $this->post_request[] = function(&$request, &$response) use ($controller) {
+            $output = $response;
+
+            if (is_integer($output)) {
+                $response = new NuggetResponse($controller);
+                $response->code = $output;
+                $response->model = '';
+            } elseif ($output instanceof NuggetResponse) {
+                $response = $output;
+            } else {
+                $response = new NuggetResponse($controller);
+                $response->model = $output;
+            }
+        };
+
         $callback = $verb[$this->params['route']];
         return $this->execute_pipeline(null, $callback);
     }
 
     private function execute_pipeline($request, $callback) {
-        if (false == $this->execute_pre_request_hooks($request, $response)) {
-            return $response;
+        if ($this->execute_pre_request_hooks($request, $response)) {
+            $response = $callback($this->params);
         }
-
-        $response = $callback($this->params);
 
         $this->execute_post_request_hooks($request, $response);
 
