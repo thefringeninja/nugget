@@ -7,6 +7,13 @@ class TestModuleController extends ModuleController {
             return null;
         };
 
+        $this->get['/returns/code/:code'] = function($p) {
+            return (int)$p['code'];
+        };
+        $this->get['/returns/model'] = function($p) {
+            return array();
+        };
+
         $this->get['/:parameter/some-resource'] = function ($p) {
             return $p['parameter'];
         };
