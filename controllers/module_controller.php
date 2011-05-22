@@ -4,6 +4,7 @@ class ModuleController extends Controller {
     var $module_path;
     var $uses = null;
     var $pre_request = array();
+    var $post_request = array();
     var $verbs = array('get', 'post', 'put', 'delete');
     function  __construct() {
         parent::__construct();
@@ -43,7 +44,18 @@ class ModuleController extends Controller {
         }
 
         $callback = $verb[$this->params['route']];
-        return $callback($this->params);
+        foreach ($this->pre_request as $hook) {
+            if (false === $hook($request, $response)) {
+                return $response;
+            }
+        }
+        $response = $callback($this->params);
+
+        foreach ($this->post_request as $hook) {
+            $hook($request, $response);
+        }
+
+        return $response;
     }
 }
 class ModuleRoute extends CakeRoute {
