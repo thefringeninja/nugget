@@ -62,12 +62,20 @@ class ModuleController extends Controller {
         };
 
         $callback = $verb[$this->params['route']];
-        return $this->execute_pipeline(null, $callback);
+
+        //to do make request a first class citizen
+        $request = array(
+            'route' => $this->params,
+            'nugget' => $this
+        );
+        $request = (object)$request;
+
+        return $this->execute_pipeline($request, $callback);
     }
 
     private function execute_pipeline($request, $callback) {
         if ($this->execute_pre_request_hooks($request, $response)) {
-            $response = $callback($this->params);
+            $response = $callback($request);
         }
 
         $this->execute_post_request_hooks($request, $response);
