@@ -14,34 +14,34 @@ Run behat from project root
 
 In your bootstrap.php:
 
-App::import('Lib', 'Nugget');
+    App::import('Lib', 'Nugget');
 
 In your router.php:
 
-Nugget::load('My');
+    Nugget::load('My');
 
 In my_nugget_controller.php:
 
-class MyNuggetController extends NuggetController {
-    var uses = array('SomeModel');
-    function __construct() {
-        $this->get['/'] = function($request) {
-            return 'Hello World!'
-        };
-        $this->get['/model/:id'] = function($request) {
-            return $request->nugget->SomeModel->findById($request->route['id']);
-        };
-        $this->get['/not-found'] = function($request) {
-            return 404;
-        };
-        $this->get['/view/:id'] = function($request) {
-            $response = new CakeViewNuggetResponse($request->nugget, 'my/index');
-            $response->model = $request->nugget->SomeModel->findById($request->route['id']);
-            return $response;
-        };
-        parent::__construct();
+    class MyNuggetController extends NuggetController {
+        var uses = array('SomeModel');
+        function __construct() {
+            $this->get['/'] = function($request) {
+                return 'Hello World!'
+            };
+            $this->get['/model/:id'] = function($request) {
+                return $request->nugget->SomeModel->findById($request->route['id']);
+            };
+            $this->get['/not-found'] = function($request) {
+                return 404;
+            };
+            $this->get['/view/:id'] = function($request) {
+                $response = new CakeViewNuggetResponse($request->nugget, 'my/index');
+                $response->model = $request->nugget->SomeModel->findById($request->route['id']);
+                return $response;
+            };
+            parent::__construct();
+        }
     }
-}
 
 ## Why Nugget?
 
