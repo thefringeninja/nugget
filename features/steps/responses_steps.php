@@ -14,4 +14,11 @@ $steps->Then('/^the response model should not be null$/', function($world) {
     Assert::NotNull($world->response->model);
 });
 
+$steps->Then('/^it should render the view$/', function($world) {
+    ob_start();
+    $world->response->render();
+    $result = ob_get_contents();
+    ob_end_clean();
+    Assert::equals('what', $result);
+});
 ?>
