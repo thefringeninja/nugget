@@ -1,7 +1,7 @@
 <?php
-$steps->Given('/^a module "([^"]*)"$/', function($world, $class) {
-            require_once dirname(dirname(__FILE__)) . '/support/test_module_controller.php';
-    $world->sut = new TestModuleController();
+$steps->Given('/^a nugget "([^"]*)"$/', function($world, $class) {
+    require_once dirname(dirname(__FILE__)) . '/support/test_nugget_controller.php';
+    $world->sut = new TestNuggetController();
 });
 $steps->Then('/^the module path should equal "([^"]*)"$/', function($world, $module_path) {
     Assert::Equals($module_path, $world->sut->module_path);
@@ -9,13 +9,13 @@ $steps->Then('/^the module path should equal "([^"]*)"$/', function($world, $mod
 
 $steps->And('/^it should register routes$/', function($world) {
     $route = Router::parse($world->sut->module_path . '/some-resource');
-    Assert::Equals('testmodule', $route['controller']);
+    Assert::Equals('testnugget', $route['controller']);
     Assert::Equals('invoke', $route['action']);
 });
 
 $steps->And('/^it should register routes with parameters$/', function($world) {
     $route = Router::parse($world->sut->module_path . '/what/some-resource');
-    Assert::Equals('testmodule', $route['controller']);
+    Assert::Equals('testnugget', $route['controller']);
     Assert::Equals('invoke', $route['action']);
 });
 

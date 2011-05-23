@@ -1,7 +1,7 @@
-Feature: Modules
+Feature: Nuggets
 
 Scenario:
-    Given a module "Test"
+    Given a nugget "Test"
     Then the module path should equal "/test"
     And it should register routes
     And it should register routes with parameters

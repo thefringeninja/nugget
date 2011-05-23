@@ -12,9 +12,9 @@ class NuggetResponse extends Object {
     private $httpCodes;
     protected $renderCallback;
 
-    function  __construct(ModuleController $moduleController) {
+    function  __construct(NuggetController $nugget) {
         parent::__construct();
-        $this->httpCodes = $moduleController->httpCodes();
+        $this->httpCodes = $nugget->httpCodes();
         $this->renderCallback = function($model) {
             if (is_object($model) || is_array($model)) {
                 echo print_r($model, true);

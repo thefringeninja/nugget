@@ -1,6 +1,6 @@
 <?php
-App::import('Controller', 'Module');
-class TestModuleController extends ModuleController {
+App::import('Controller', 'Nugget');
+class TestNuggetController extends NuggetController {
     var $components = null;
     function  __construct() {
         $this->get['/some-resource'] = function ($request) {

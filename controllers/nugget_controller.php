@@ -1,7 +1,7 @@
 <?php
 App::import('Lib', 'Inflector');
 App::import('Lib', 'NuggetResponse');
-class ModuleController extends Controller {
+class NuggetController extends Controller {
     var $module_path;
     var $uses = null;
     var $pre_request = array();
@@ -11,7 +11,7 @@ class ModuleController extends Controller {
         parent::__construct();
         $this->autoRender = false;
         $r = null;
-        if (!preg_match('/(.*)Module/i', $this->name, $r)) {
+        if (!preg_match('/(.*)Nugget/i', $this->name, $r)) {
                 __("Controller::__construct() : Can not get or parse my own class name, exiting.");
                 $this->_stop();
         }
@@ -28,7 +28,7 @@ class ModuleController extends Controller {
                     'verb' => $verb,
                     'route' => $route,
                     'return' => true
-                ), array('routeClass' => 'ModuleRoute'));
+                ), array('routeClass' => 'NuggetRoute'));
             }
         }
     }
@@ -98,7 +98,7 @@ class ModuleController extends Controller {
         }
     }
 }
-class ModuleRoute extends CakeRoute {
+class NuggetRoute extends CakeRoute {
     function  parse($url) {
         $params = parent::parse($url);
         if (false == $params) {
