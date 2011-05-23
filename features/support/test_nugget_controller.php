@@ -19,6 +19,12 @@ class TestNuggetController extends NuggetController {
             return $response;
         };
 
+        $this->get['/returns/request'] = function($request) {
+            $response = new NuggetResponse($request->nugget);
+            $response->model = $request;
+            return $response;
+        };
+
         $this->get['/:parameter/some-resource'] = function ($request) {
             return $request->route['parameter'];
         };
