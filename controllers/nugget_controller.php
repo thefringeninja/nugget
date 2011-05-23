@@ -1,6 +1,7 @@
 <?php
 App::import('Lib', 'Inflector');
 App::import('Lib', 'NuggetResponse');
+App::import('Lib', 'NuggetRequest');
 class NuggetController extends Controller {
     var $module_path;
     var $uses = null;
@@ -63,17 +64,12 @@ class NuggetController extends Controller {
 
         $callback = $verb[$this->params['route']];
 
-        //to do make request a first class citizen
-        $request = array(
-            'route' => $this->params,
-            'nugget' => $this
-        );
-        $request = (object)$request;
+        $request = new NuggetRequest($this);
 
         return $this->execute_pipeline($request, $callback);
     }
 
-    private function execute_pipeline($request, $callback) {
+    private function execute_pipeline(NuggetRequest $request, $callback) {
         if ($this->execute_pre_request_hooks($request, $response)) {
             $response = $callback($request);
         }
@@ -83,7 +79,7 @@ class NuggetController extends Controller {
         return $response;
     }
 
-    private function execute_pre_request_hooks(&$request, &$response) {
+    private function execute_pre_request_hooks(NuggetRequest &$request, &$response) {
         foreach ($this->pre_request as $hook) {
             if (false === $hook($request, $response)) {
                 return false;
@@ -92,7 +88,7 @@ class NuggetController extends Controller {
         return true;
     }
 
-    private function execute_post_request_hooks(&$request, &$response) {
+    private function execute_post_request_hooks(NuggetRequest &$request, &$response) {
         foreach ($this->post_request as $hook) {
             $hook($request, $response);
         }

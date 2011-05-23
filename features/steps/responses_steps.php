@@ -2,6 +2,7 @@
 
 $steps->When('/^I request "([^"]*)"$/', function($world, $url) {
     $_SERVER['REQUEST_METHOD'] = 'GET';
+    $_SERVER['REQUEST_URI'] = $url;
     $world->sut->params = Router::parse($url);
     $world->response = $world->sut->invoke();
 });
