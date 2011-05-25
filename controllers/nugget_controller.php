@@ -2,11 +2,12 @@
 App::import('Lib', 'Inflector');
 App::import('Lib', 'NuggetResponse');
 App::import('Lib', 'NuggetRequest');
+App::import('Lib', 'NuggetPipeline');
 class NuggetController extends Controller {
     var $module_path;
     var $uses = null;
-    var $pre_request = array();
-    var $post_request = array();
+    var $pre_request;
+    var $post_request;
     var $verbs = array('get', 'post', 'put', 'delete');
     function  __construct() {
         parent::__construct();
@@ -17,6 +18,9 @@ class NuggetController extends Controller {
                 $this->_stop();
         }
         $this->module_path = '/' . strtolower($r[1]);
+
+        $this->pre_request = new NuggetPipeline();
+        $this->post_request = new NuggetPipeline();
 
         foreach ($this->verbs as $verb) {
             if (false == isset($this->{$verb})) {
@@ -47,7 +51,7 @@ class NuggetController extends Controller {
 
         // the last item in the pipeline should be the rendering step
         $controller = &$this;
-        $this->post_request[] = function(&$request, &$response) use ($controller) {
+        $this->post_request->last(function(&$request, &$response) use ($controller) {
             $output = $response;
 
             if (is_integer($output)) {
@@ -60,7 +64,7 @@ class NuggetController extends Controller {
                 $response = new NuggetResponse($controller);
                 $response->model = $output;
             }
-        };
+        });
 
         $callback = $verb[$this->params['route']];
 
@@ -80,7 +84,7 @@ class NuggetController extends Controller {
     }
 
     private function execute_pre_request_hooks(NuggetRequest &$request, &$response) {
-        foreach ($this->pre_request as $hook) {
+        foreach ($this->pre_request->enumerate() as $hook) {
             if (false === $hook($request, $response)) {
                 return false;
             }
@@ -89,7 +93,7 @@ class NuggetController extends Controller {
     }
 
     private function execute_post_request_hooks(NuggetRequest &$request, &$response) {
-        foreach ($this->post_request as $hook) {
+        foreach ($this->post_request->enumerate() as $hook) {
             $hook($request, $response);
         }
     }
