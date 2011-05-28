@@ -1,7 +1,8 @@
 <?php
 $steps->Given('/^a nugget "([^"]*)"$/', function($world, $class) {
-    require_once dirname(dirname(__FILE__)) . '/support/test_nugget_controller.php';
-    $world->sut = new TestNuggetController();
+    require_once dirname(dirname(__FILE__)) . '/support/' . strtolower($class) . '_nugget_controller.php';
+    $class = $class . 'NuggetController';
+    $world->sut = new $class;
 });
 $steps->Then('/^the module path should equal "([^"]*)"$/', function($world, $module_path) {
     Assert::Equals($module_path, $world->sut->module_path);
