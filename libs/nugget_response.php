@@ -24,14 +24,25 @@ class NuggetResponse extends Object {
         };
     }
 
+    final public function set_header($key, $value) {
+        $key = strtolower($key);
+        $this->headers[$key] = $value;
+    }
+
+    final public function get_header($key) {
+        $key = strtolower($key);
+        return array_key_exists($key, $this->headers)
+                ? $this->headers[$key]
+                : null;
+    }
+
     // sets the headers, http response code, etc
     protected function beforeRender() {
         $message = $this->httpCodes[$this->code];
         // to do: send status or whatever depending on the webserver
         header("HTTP/1.1 " . $this->code . ' ' . $message);
 
-        $headers = $this->headers;
-        $headers['Content-Type'] = $this->content_type;
+        $this->set_header('Content-Type', $this->content_type);
         foreach ($this->headers as $key => $value) {
             header("$key: $value");
         }

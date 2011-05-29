@@ -17,9 +17,13 @@ $steps->Given('/^I insert a post request hook$/', function($world) {
 });
 
 $steps->When('/^I request a resource$/', function($world) {
+    $world->sut->constructClasses();
+    $world->sut->startupProcess();
+
     $_SERVER['REQUEST_METHOD'] = 'GET';
     $world->sut->params = Router::parse('/test/what/some-resource');
     $world->result = $world->sut->invoke();
+    $world->sut->shutdownProcess();
 });
 
 $steps->Then('/^it should cancel execution of the route$/', function($world) {

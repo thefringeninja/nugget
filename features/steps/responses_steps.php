@@ -5,6 +5,11 @@ $steps->When('/^I request "([^"]*)"$/', function($world, $url) {
     $_SERVER['REQUEST_URI'] = $url;
     $world->sut->params = Router::parse($url);
     $world->response = $world->sut->invoke();
+    ob_start();
+    $world->response->render();
+    $world->output = ob_get_contents();
+    ob_end_clean();
+
 });
 
 $steps->Then('/^the response code should be (\d+)$/', function($world, $code) {
@@ -16,10 +21,6 @@ $steps->Then('/^the response model should not be null$/', function($world) {
 });
 
 $steps->Then('/^it should render the view$/', function($world) {
-    ob_start();
-    $world->response->render();
-    $result = ob_get_contents();
-    ob_end_clean();
-    Assert::equals('what', $result);
+    Assert::equals('what', $world->output);
 });
 ?>
