@@ -73,6 +73,7 @@ if (isset($corePath[0])) {
 require_once dirname(dirname(ROOT)) . '/libs/nugget.php';
 require_once dirname(dirname(ROOT)) . '/libs/nugget_response.php';
 require_once dirname(dirname(ROOT)) . '/libs/nugget_request.php';
+require_once dirname(dirname(ROOT)) . '/libs/nugget_pipeline.php';
 require_once dirname(dirname(ROOT)) . '/libs/cake_view_nugget_response.php';
 require_once dirname(dirname(ROOT)) . '/controllers/nugget_controller.php';
 

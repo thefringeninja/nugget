@@ -5,15 +5,15 @@ $steps->Given('/^I insert a pre request hook that returns (true|false)$/', funct
     } else {
         $value = true;
     }
-    $world->sut->pre_request[] = function(&$request, &$response) use($value){
+    $world->sut->pre_request->last(function(&$request, &$response) use($value){
         $response = 'intercepted';
         return $value;
-    };
+    });
 });
 $steps->Given('/^I insert a post request hook$/', function($world) {
-    $world->sut->post_request[] = function(&$request, &$response) {
+    $world->sut->post_request->last(function(&$request, &$response) {
         $response .= ' after';
-    };
+    });
 });
 
 $steps->When('/^I request a resource$/', function($world) {
