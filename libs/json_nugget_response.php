@@ -5,7 +5,7 @@ class JsonNuggetResponse extends NuggetResponse {
         parent::__construct($nugget);
         $this->content_type = 'application/json';
         $this->renderCallback = function($model) use($nugget) {
-            echo json_decode($model, true);
+            echo json_encode($model, true);
         };
     }
 }
