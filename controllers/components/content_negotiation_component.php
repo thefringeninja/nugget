@@ -18,12 +18,24 @@ class ContentNegotiationComponent extends Object {
 
         $responses = $this->responses;
 
-        $this->nugget->post_request->last(function(&$request, &$response) use ($responses){
-            while (count($responses) > 0) {
-                $callback = array_pop($responses);
-                $callback($request, $response);
+        $this->nugget->post_request->last(function(NuggetRequest &$request, &$response) use ($responses){
+            $accepts = array_map(function($element){
+                return trim($element);
+            }, explode(',', $request->header("Accept")));
+
+            foreach ($responses as $content_type => $callback ) {
+                $pattern = '/^' . str_replace('/', '\\/', $content_type) . '/';
+                foreach ($accepts as $accept) {
+                    if (false == preg_match($pattern, $accept)) {
+                        continue;
+                    }
+                    $callback($request, $response);
+                    $response->content_type = $content_type;
+               }
             }
         });
     }
+
+    
 }
 ?>
