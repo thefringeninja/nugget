@@ -4,6 +4,11 @@ $steps->Given('/^a nugget "([^"]*)"$/', function($world, $class) {
     $class = $class . 'NuggetController';
     $world->sut = new $class;
 });
+$steps->And('/^the nugget is using component "([^"]*)"$/', function($world, $component) {
+    $class = $component . 'Component';
+    $world->sut->{$component} = new $class;
+    $world->sut->{$component}->initialize($world->sut);
+});
 $steps->Then('/^the module path should equal "([^"]*)"$/', function($world, $module_path) {
     Assert::Equals($module_path, $world->sut->module_path);
 });

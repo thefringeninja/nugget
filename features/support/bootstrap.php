@@ -75,8 +75,9 @@ require_once dirname(dirname(ROOT)) . '/libs/nugget_response.php';
 require_once dirname(dirname(ROOT)) . '/libs/nugget_request.php';
 require_once dirname(dirname(ROOT)) . '/libs/nugget_pipeline.php';
 require_once dirname(dirname(ROOT)) . '/libs/cake_view_nugget_response.php';
+require_once dirname(dirname(ROOT)) . '/libs/json_nugget_response.php';
 require_once dirname(dirname(ROOT)) . '/controllers/nugget_controller.php';
-
+require_once dirname(dirname(ROOT)) . '/controllers/components/content_negotiation_component.php';
 class Security {
     function inactiveMins(){}
 }
