@@ -1,5 +1,5 @@
 <?php
-App::import('Libs', 'NuggetResponse');
+App::import('Lib', 'Nugget.NuggetResponse');
 class CakeViewNuggetResponse extends NuggetResponse {
     function  __construct(array $params = array()) {
         $params = array_merge(array(

@@ -1,8 +1,8 @@
 <?php
 App::import('Lib', 'Inflector');
-App::import('Lib', 'NuggetResponse');
-App::import('Lib', 'NuggetRequest');
-App::import('Lib', 'NuggetPipeline');
+App::import('Lib', 'Nugget.NuggetResponse');
+App::import('Lib', 'Nugget.NuggetRequest');
+App::import('Lib', 'Nugget.NuggetPipeline');
 class NuggetController extends Controller {
     var $module_path;
     var $uses = null;

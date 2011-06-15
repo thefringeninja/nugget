@@ -1,5 +1,5 @@
 <?php
-App::import('Libs', 'NuggetResponse');
+App::import('Lib', 'Nugget.NuggetResponse');
 class JsonNuggetResponse extends NuggetResponse {
     function  __construct(array $params = array()) {
         parent::__construct(array_merge($params, array('content_type' => 'application/json')));
