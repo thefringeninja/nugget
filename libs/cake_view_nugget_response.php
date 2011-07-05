@@ -3,6 +3,7 @@ App::import('Libs', 'NuggetResponse');
 class CakeViewNuggetResponse extends NuggetResponse {
     function  __construct(NuggetController $nugget, $view, $layout = 'default') {
         parent::__construct($nugget);
+        $this->content_type = 'text/html';
         $this->renderCallback = function($model) use($nugget, $view, $layout) {
             $cake_view = new View($nugget);
             $cake_view->viewVars['model'] = $model;
