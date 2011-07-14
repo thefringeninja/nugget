@@ -9,9 +9,10 @@ class ConnegNuggetController extends NuggetController {
                 // this should be a no op since by default we are using the cake view
             });
             $cn->respond_as('application/json', function(&$request, &$response) {
-                $json = new JsonNuggetResponse($request->nugget);
-                $json->model = $response->model;
-                $json->code = $response->code;
+                $json = new JsonNuggetResponse(array(
+                        'code' => $response->code,
+                        'model' => $response->model
+                                               ));
                 $response = $json;
             });
             return array('hello' => 'world');

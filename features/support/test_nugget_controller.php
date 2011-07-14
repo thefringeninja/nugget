@@ -14,15 +14,15 @@ class TestNuggetController extends NuggetController {
             return array();
         };
         $this->get['/returns/view'] = function($request) {
-            $response = new CakeViewNuggetResponse($request->nugget, 'test/view');
-            $response->model = array('parameter' => 'what');
-            return $response;
+            return new CakeViewNuggetResponse(array(
+                    'view' => 'test/view',
+                    'model' => array('parameter' => 'what'),
+                    'nugget' => $request->nugget
+                                                   ));
         };
 
         $this->get['/returns/request'] = function($request) {
-            $response = new NuggetResponse($request->nugget);
-            $response->model = $request;
-            return $response;
+            return new NuggetResponse(array('model' => $request));
         };
 
         $this->get['/:parameter/some-resource'] = function ($request) {

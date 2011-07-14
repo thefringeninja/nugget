@@ -55,14 +55,13 @@ class NuggetController extends Controller {
             $output = $response;
 
             if (is_integer($output)) {
-                $response = new NuggetResponse($controller);
-                $response->code = $output;
-                $response->model = '';
+                $response = new NuggetResponse(array(
+                        'code' => $output,
+                        'model' => ''));
             } elseif ($output instanceof NuggetResponse) {
                 $response = $output;
             } else {
-                $response = new NuggetResponse($controller);
-                $response->model = $output;
+                $response = new NuggetResponse(array('model' => $output));
             }
         });
 

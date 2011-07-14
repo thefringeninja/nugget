@@ -52,8 +52,13 @@ class NuggetResponse extends Object {
     
     protected $renderCallback;
 
-    function  __construct(NuggetController $nugget) {
+    function  __construct(array $params = array()) {
         parent::__construct();
+
+        foreach ($params as $key => $value) {
+            $this->{$key} = $value;
+        }
+
         $this->renderCallback = function($model) {
             if (is_object($model) || is_array($model)) {
                 echo print_r($model, true);
