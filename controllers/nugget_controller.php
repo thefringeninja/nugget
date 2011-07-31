@@ -36,6 +36,9 @@ class NuggetController extends Controller {
                 ), array('routeClass' => 'NuggetRoute'));
             }
         }
+
+        $this->inherit("helpers");
+        $this->inherit("components");
     }
 
     function invoke() {
@@ -70,6 +73,24 @@ class NuggetController extends Controller {
         $request = new NuggetRequest($this);
 
         return $this->execute_pipeline($request, $callback);
+    }
+
+    private function inherit($member) {
+        $names = array();
+
+        $static_member = "_$member";
+
+        $class = get_class($this);
+
+        while ($class) {
+            $r = new ReflectionClass($class);
+            if ($r->hasProperty($static_member)) {
+                $names = array_merge($names, $class::$$static_member);
+            }
+            $class = get_parent_class($class);
+        }
+
+        $this->$member = $names;
     }
 
     private function execute_pipeline(NuggetRequest $request, $callback) {

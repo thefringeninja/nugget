@@ -1,7 +1,8 @@
 <?php
 App::import('Controller', 'Nugget');
 class TestNuggetController extends NuggetController {
-    var $components = null;
+    public static $_components = array('RequestHandler');
+    public static $_helpers = array('Time');
     function  __construct() {
         $this->get['/some-resource'] = function ($request) {
             return null;
@@ -35,5 +36,10 @@ class TestNuggetController extends NuggetController {
 
         parent::__construct();
     }
+}
+
+class TestSubclassNuggetController extends TestNuggetController {
+    public static $_components = array('Email');
+    public static $_helpers = array('Text');
 }
 ?>
