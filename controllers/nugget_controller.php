@@ -9,15 +9,14 @@ class NuggetController extends Controller {
     var $pre_request;
     var $post_request;
     var $verbs = array('get', 'post', 'put', 'delete');
-    function  __construct() {
+    function  __construct($module_path = false) {
         parent::__construct();
         $this->autoRender = false;
-        $r = null;
-        if (!preg_match('/(.*)Nugget/i', $this->name, $r)) {
-                __("Controller::__construct() : Can not get or parse my own class name, exiting.");
-                $this->_stop();
+
+        if (false === $module_path) {
+            $module_path = $this->determine_module_path();
         }
-        $this->module_path = '/' . strtolower($r[1]);
+        $this->module_path = $module_path;
 
         $this->pre_request = new NuggetPipeline();
         $this->post_request = new NuggetPipeline();
@@ -39,6 +38,17 @@ class NuggetController extends Controller {
 
         $this->inherit("helpers");
         $this->inherit("components");
+    }
+
+    private function determine_module_path() {
+        $r = null;
+        if (!preg_match('/(.*)Nugget/i', $this->name, $r)) {
+            __("Controller::__construct() : Can not get or parse my own class name, exiting.");
+            $this->_stop();
+        }
+        $module_path = '/' . strtolower($r[1]);
+
+        return $module_path;
     }
 
     function invoke() {
