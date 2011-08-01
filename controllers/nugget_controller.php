@@ -8,6 +8,7 @@ class NuggetController extends Controller {
     var $uses = null;
     var $pre_request;
     var $post_request;
+    var $route_class = 'NuggetRoute';
     var $verbs = array('get', 'post', 'put', 'delete');
     function  __construct($module_path = false) {
         parent::__construct();
@@ -32,7 +33,7 @@ class NuggetController extends Controller {
                     'verb' => $verb,
                     'route' => $route,
                     'return' => true
-                ), array('routeClass' => 'NuggetRoute'));
+                ), array('routeClass' => $this->route_class));
             }
         }
 
