@@ -27,6 +27,7 @@ class NuggetController extends Controller {
                 continue;
             }
             foreach ($this->{$verb} as $route => $resource) {
+                $route = preg_replace('/\/$/',null, $route);
                 Router::connect($this->module_path . $route, array(
                     'controller' => strtolower($this->name),
                     'action' => 'invoke',
