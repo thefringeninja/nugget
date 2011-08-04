@@ -31,7 +31,7 @@ class NuggetController extends Controller {
                     'controller' => strtolower($this->name),
                     'action' => 'invoke',
                     'verb' => $verb,
-                    'route' => $route,
+                    'route' => $this->module_path . $route,
                     'return' => true
                 ), array('routeClass' => $this->route_class));
             }
