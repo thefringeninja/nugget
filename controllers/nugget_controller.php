@@ -26,13 +26,13 @@ class NuggetController extends Controller {
             if (false == isset($this->{$verb})) {
                 continue;
             }
-            foreach ($this->{$verb} as $route => $resource) {
-                $route = preg_replace('/\/$/',null, $route);
-                Router::connect($this->module_path . $route, array(
+            foreach ($this->{$verb} as $sub_route => $resource) {
+                $route = $this->route($sub_route);
+                Router::connect($route, array(
                     'controller' => strtolower($this->name),
                     'action' => 'invoke',
                     'verb' => $verb,
-                    'route' => $this->module_path . $route,
+                    'route' => $sub_route,
                     'return' => true
                 ), array('routeClass' => $this->route_class));
             }
@@ -51,6 +51,10 @@ class NuggetController extends Controller {
         $module_path = '/' . strtolower($r[1]);
 
         return $module_path;
+    }
+
+    private function route($sub_route) {
+        return $this->module_path . preg_replace('/\/$/',null, $sub_route);
     }
 
     function invoke() {
