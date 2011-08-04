@@ -59,13 +59,13 @@ class NuggetController extends Controller {
 
     function invoke() {
         if (false == isset($this->{$this->params['verb']})) {
-            return 404;
+            return new NuggetResponse(array('code' => 404));
         }
 
         $verb = $this->{$this->params['verb']};
 
         if (false == isset($verb[$this->params['route']])) {
-            return 404;
+            return new NuggetResponse(array('code' => 404));
         }
 
         // the last item in the pipeline should be the rendering step
