@@ -69,8 +69,7 @@ class NuggetController extends Controller {
         }
 
         // the last item in the pipeline should be the rendering step
-        $controller = &$this;
-        $this->post_request->last(function(&$request, &$response) use ($controller) {
+        $this->post_request->last(function(&$request, &$response) {
             $output = $response;
 
             if (is_integer($output)) {
