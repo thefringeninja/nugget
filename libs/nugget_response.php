@@ -93,7 +93,8 @@ class NuggetResponse extends Object {
 
         $this->set_header('Content-Type', $this->content_type);
         foreach ($this->headers as $key => $value) {
-            $this->set_header($key, $value);
+            $header = "$key: $value";
+	        header($header);
         }
     }
 
