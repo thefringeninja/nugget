@@ -21,5 +21,10 @@ class Nugget {
         }
         return Nugget::$nuggets[$nugget];
     }
+
+    public static function url(array $segments = array()) {
+        //to do: do we want to check current nuggets for a route match?
+        return '/' . implode('/', $segments);
+    }
 }
 ?>
