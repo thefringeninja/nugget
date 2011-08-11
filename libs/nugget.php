@@ -1,8 +1,17 @@
 <?php
 class Nugget {
-    private static $nuggets = array();
+    public static $nuggets = array();
 
-    public static function load($nugget) {
+    public static function load($nuggets) {
+        if (false === is_array($nuggets)) {
+            $nuggets[] = $nuggets;
+        }
+        foreach ($nuggets as $nugget) {
+            self::load_nugget($nugget);
+        }
+    }
+
+    private static function load_nugget($nugget) {
         if (false === isset(Nugget::$nuggets[$nugget])) {
             if (false == App::import('Controller', $nugget . 'Nugget')) {
                 return false;
