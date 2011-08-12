@@ -1,5 +1,7 @@
 <?php
 class NuggetResponse extends Object {
+    static $render_header_callback = false;
+
     static $status_codes = array(
         100 => 'Continue', 
         101 => 'Switching Protocols',
@@ -88,13 +90,15 @@ class NuggetResponse extends Object {
             $status .= ' ' . self::$status_codes[$this->code];
         }
 
+        $header = self::$render_header_callback
+                ?: function($value) {};
+
         // to do: send status or whatever depending on the webserver
-        header($status);
+        $header($status);
 
         $this->set_header('Content-Type', $this->content_type);
         foreach ($this->headers as $key => $value) {
-            $header = "$key: $value";
-	        header($header);
+	        $header("$key: $value");
         }
     }
 
