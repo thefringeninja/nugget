@@ -1,22 +1,11 @@
 <?php
-require_once 'PHPUnit/Assert.php';
+require_once 'PHPUnit/Autoload.php';
 
-class Assert  extends PHPUnit_Assert {
-    function & getInstance() {
-        static $instance = array();
-            if (!$instance) {
-                    $instance[0] = new Assert();
-            }
-            return $instance[0];
-    }
+class Assert extends PHPUnit_Framework_Assert {
     static function  __callStatic($name, $arguments) {
-        $_this = &Assert::getInstance();
+        $name = Inflector::camelize($name);
         $method = 'assert' . $name;
-        call_user_func_array(array($_this, $method), $arguments);
-    }
-
-    function fail($message = '') {
-        throw new Exception($message);
+        call_user_func_array(array('PHPUnit_Framework_Assert', $method), $arguments);
     }
 }
 ?>
