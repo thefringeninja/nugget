@@ -4,7 +4,7 @@ class Nugget {
 
     public static function load($nuggets) {
         if (false === is_array($nuggets)) {
-            $nuggets[] = $nuggets;
+            $nuggets = array($nuggets);
         }
         foreach ($nuggets as $nugget) {
             self::load_nugget($nugget);
