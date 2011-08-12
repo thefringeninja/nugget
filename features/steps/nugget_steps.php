@@ -42,12 +42,12 @@ $steps->And('/^it should route the action based on the verb$/', function($world)
     Assert::Equals('what was posted', $result->model);
 });
 $steps->Then('/^it should inherit helpers from its parent class$/', function($world) {
-    Assert::contains('Time', $world->sut->helpers);
-    Assert::contains('Text', $world->sut->helpers);
+    Assert::array_has_key('Time', $world->sut->helpers);
+    Assert::array_has_key('Text', $world->sut->helpers);
 });
 
 $steps->And('/^it should inherit components from its parent class$/', function($world) {
-    Assert::contains('RequestHandler', $world->sut->components);
-    Assert::contains('Email', $world->sut->components);
+    Assert::array_has_key('RequestHandler', $world->sut->components);
+    Assert::array_has_key('Email', $world->sut->components);
 });
 ?>

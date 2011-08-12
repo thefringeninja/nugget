@@ -96,15 +96,24 @@ class NuggetController extends Controller {
         $static_member = "_$member";
 
         $class = get_class($this);
-
         while ($class) {
-            $r = new ReflectionClass($class);
-            if ($r->hasProperty($static_member)) {
-                $names = array_merge($names, $class::$$static_member);
-            }
+            $classes[] = $class;
             $class = get_parent_class($class);
         }
+        $classes = array_reverse($classes);
+        foreach($classes as $class) {
+            $r = new ReflectionClass($class);
+            if ($r->hasProperty($static_member)) {
+	            foreach($class::$$static_member as $key => $value) {
+		            if (is_integer($key)) {
+			            $key = $value;
+			            $value = array();
+		            }
 
+		            $names[$key] = $value;
+	            }
+            }
+        }
         $this->$member = $names;
     }
 
