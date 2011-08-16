@@ -84,11 +84,7 @@ class NuggetResponse extends Object {
 
     // sets the headers, http response code, etc
     protected function beforeRender() {
-        $status = "HTTP/1.1 $this->code";
-
-        if (isset(self::$status_codes[$this->code])) {
-            $status .= ' ' . self::$status_codes[$this->code];
-        }
+	    $status = $this->status();
 
         $header = self::$render_header_callback
                 ?: function($value) {};
@@ -102,10 +98,27 @@ class NuggetResponse extends Object {
         }
     }
 
-    public final function render() {
+	protected function status() {
+		$status = "HTTP/1.1 $this->code";
+
+		if (isset(self::$status_codes[$this->code])) {
+			$status .= ' ' . self::$status_codes[$this->code];
+		}
+		return $status;
+	}
+
+	public final function render() {
         $this->beforeRender();
         $callback = $this->renderCallback;
         $callback($this->model);
     }
+
+	function __toString() {
+		$headers[] = $this->status();
+		foreach ($this->headers as $key => $value) {
+			$headers[] = "$key: $value";
+		}
+		return implode("\n", $headers);
+	}
 }
 ?>

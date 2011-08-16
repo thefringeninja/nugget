@@ -141,6 +141,18 @@ class NuggetController extends Controller {
             $hook($request, $response);
         }
     }
+
+	function __toString() {
+		try {
+			$verb = isset($_SERVER['X_HTTP_METHOD_OVERRIDE'])
+				? $_SERVER['X_HTTP_METHOD_OVERRIDE']
+				: $_SERVER['REQUEST_METHOD'];
+			$url = $_SERVER['REQUEST_URI'];
+			return "$verb $url";
+
+		} catch(Exception $e) {}
+		return "";
+	}
 }
 class NuggetRoute extends CakeRoute {
     function  parse($url) {
