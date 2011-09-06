@@ -38,6 +38,13 @@ class NuggetRequest {
                 $headers[$k] = $v;
             }
         }
+
+	    if (isset($_SERVER['CONTENT_TYPE'])) {
+	        $headers['content-type'] = $_SERVER['CONTENT_TYPE'];
+	    }
+	    if (isset($_SERVER['CONTENT_LENGTH'])) {
+		    $headers['content-length'] = $_SERVER['CONTENT_LENGTH'];
+	    }
         return $headers;
     }
 }
