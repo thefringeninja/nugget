@@ -19,7 +19,11 @@ class NuggetRequest {
     }
 
     function header($key) {
-        return $this->headers[strtolower($key)];
+	    $key = strtolower($key);
+	    if (false === isset($this->headers[$key])) {
+		    return false;
+	    }
+	    return $this->headers[$key];
     }
 
     // http://www.bluehostforum.com/showthread.php?1453-request-headers-(php)
