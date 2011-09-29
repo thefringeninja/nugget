@@ -28,7 +28,7 @@ class Nugget {
 		    $segments = $segments[0];
 	    }
         //to do: do we want to check current nuggets for a route match?
-        return '/' . implode('/', $segments);
+        return preg_replace('/^(\\/+)/', '/',  '/' . implode('/', $segments));
     }
 }
 ?>
