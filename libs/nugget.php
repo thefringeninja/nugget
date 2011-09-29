@@ -22,7 +22,11 @@ class Nugget {
         return Nugget::$nuggets[$nugget];
     }
 
-    public static function url(array $segments = array()) {
+    public static function url() {
+	    $segments = func_get_args();
+	    if (is_array($segments[0] ?: false)) {
+		    $segments = $segments[0];
+	    }
         //to do: do we want to check current nuggets for a route match?
         return '/' . implode('/', $segments);
     }
