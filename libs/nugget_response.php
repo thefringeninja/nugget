@@ -121,4 +121,30 @@ class NuggetResponse extends Object {
 		return implode("\n", $headers);
 	}
 }
+
+class HeadNuggetResponse extends NuggetResponse {
+	function __construct(array $params = array()) {
+		parent::__construct($params);
+
+		$this->renderCallbackLast = $this->renderCallback;
+		$this->renderCallback = function($model) {
+			//no op
+		};
+	}
+
+	protected function beforeRender() {
+		$cb = $this->renderCallbackLast;
+
+		$response = $this;
+
+		ob_start(function($content) use ($response) {
+				$response->set_header('content-length', strlen($content));
+			});
+
+		$cb($this->model);
+		ob_end_clean();
+
+		parent::beforeRender();
+	}
+}
 ?>

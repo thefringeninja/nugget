@@ -9,7 +9,7 @@ class NuggetController extends Controller {
     var $pre_request;
     var $post_request;
     var $route_class = 'NuggetRoute';
-    var $verbs = array('get', 'post', 'put', 'delete');
+    var $verbs = array('get', 'post', 'put', 'delete', 'head');
     function  __construct($module_path = false) {
         parent::__construct();
         $this->autoRender = false;
@@ -22,27 +22,65 @@ class NuggetController extends Controller {
         $this->pre_request = new NuggetPipeline();
         $this->post_request = new NuggetPipeline();
 
-        foreach ($this->verbs as $verb) {
-            if (false == isset($this->{$verb})) {
-                continue;
-            }
-            foreach ($this->{$verb} as $sub_route => $resource) {
-                $route = $this->route($sub_route);
-                Router::connect($route, array(
-                    'controller' => strtolower($this->name),
-                    'action' => 'invoke',
-                    'verb' => $verb,
-                    'route' => $sub_route,
-                    'return' => true
-                ), array('routeClass' => $this->route_class));
-            }
-        }
+		$this->setup_head_requests();
+
+        $this->setup_routes();
 
         $this->inherit("helpers");
         $this->inherit("components");
     }
 
-    private function determine_module_path() {
+	private function setup_head_requests() {
+		if (false === isset($this->get)) {
+			return;
+		}
+
+		foreach ($this->get as $route => $callback) {
+			$this->head[$route] = function(NuggetRequest $request) use ($callback) {
+					$response = $callback($request);
+				    if (is_numeric($response)) {
+					    return new HeadNuggetResponse(array(
+							    'code' => $response
+						    ));
+				    }
+
+					if (is_a($response, 'NuggetResponse')) {
+						return new HeadNuggetResponse(array(
+								'code' => $response->code,
+								'headers' => $response->headers,
+								'model' => $response->model,
+								'content_type' => $response->content_type
+							));
+					}
+
+					return new HeadNuggetResponse(
+						array(
+							'model' => $response
+						)
+					);
+			    };
+		}
+	}
+
+	private function setup_routes() {
+		foreach ($this->verbs as $verb) {
+			if (false == isset($this->{$verb})) {
+				continue;
+			}
+			foreach ($this->{$verb} as $sub_route => $resource) {
+				$route = $this->route($sub_route);
+				Router::connect($route, array(
+						'controller' => strtolower($this->name),
+						'action' => 'invoke',
+						'verb' => $verb,
+						'route' => $sub_route,
+						'return' => true
+					), array('routeClass' => $this->route_class));
+			}
+		}
+	}
+
+	private function determine_module_path() {
         $r = null;
         if (!preg_match('/(.*)Nugget/i', $this->name, $r)) {
             __("Controller::__construct() : Can not get or parse my own class name, exiting.");

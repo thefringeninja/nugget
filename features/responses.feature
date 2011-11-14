@@ -17,3 +17,9 @@ Scenario: Renders a cakephp view
     Then the response code should be 200
         And the response model should not be null
         And it should render the view
+
+Scenario: Head requests
+	Given a nugget "Test"
+	When I make a HEAD request to "/test/returns/view"
+    Then the response code should be 200
+        And the body of the response should be empty
